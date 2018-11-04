@@ -18,7 +18,7 @@ query_times = np.array([
 ])
 
 print('Оценки среднего времени:')
-[print(f'ТС: {timeout}; Среднее время: {mean_time}') for mean_time, timeout in zip(query_times, TIMEOUT)]
+[print(f'ТС: {timeout}; Среднее время: {mean_time:2.4}') for mean_time, timeout in zip(query_times, TIMEOUT)]
 
 pylab.plot(TIMEOUT, query_times, 'k-', label='среднее время запроса')
 pylab.plot(TIMEOUT, TIMEOUT, 'k*', label='ограничение ТС')
@@ -27,6 +27,6 @@ pylab.xticks(TIMEOUT)
 pylab.yticks(np.arange(0, np.ceil(np.amax(TIMEOUT)) + 1, 1))
 pylab.xlabel('Время ТС')
 pylab.ylabel('Среднее время запроса')
-pylab.title('График среднего времени запрсоа от ограничения ТС')
+pylab.title('График среднего времени запроса от ограничения ТС')
 pylab.legend()
 pylab.show()
