@@ -1,4 +1,5 @@
 import itertools
+from collections import namedtuple
 from networkx import DiGraph
 from networkx.algorithms import find_cycle
 from networkx.exception import NetworkXNoCycle
@@ -26,6 +27,8 @@ BLOCKS = [
     ('C7', 'C6'),
 ]
 
+RESOLVE_RESULT = namedtuple('resolve_result', ('order', 'removed', 'cost'))
+
 
 def resolve(edges, order):
 
@@ -42,14 +45,14 @@ def resolve(edges, order):
         except NetworkXNoCycle:
             break
 
-    return [*graph.node, *removed], sum(COSTS[key] for key in removed)
+    return RESOLVE_RESULT([*graph.node, *removed], removed, sum(COSTS[key] for key in removed))
 
 
 if __name__ == '__main__':
 
-    steps, steps_cost = resolve(BLOCKS, sorted(COSTS, key=lambda k: COSTS[k]))
-    print('\n\nПошаговый алгоритм: {};\nСтоимость отката: {}'.format(steps, steps_cost))
+    steps, steps_removed, steps_cost = resolve(BLOCKS, sorted(COSTS, key=lambda k: COSTS[k]))
+    print('\n\nПошаговый алгоритм: {};\nОткаты: {}\nСтоимость отката: {}'.format(steps, steps_removed, steps_cost))
 
     variants = [(resolve(BLOCKS, variant)) for variant in itertools.permutations(COSTS)]
-    optimal, optimal_cost = min(variants, key=lambda result: result[1])
-    print('\n\nОптимальный алгоритм: {};\nСтоимость отката: {}'.format(optimal, optimal_cost))
+    optimal, optimal_removed, optimal_cost = min(variants, key=lambda result: result.cost)
+    print('\n\nОптимальный алгоритм: {};\nОткаты: {}\nСтоимость отката: {}'.format(optimal, steps_removed, optimal_cost))
