@@ -16,4 +16,4 @@ VARIANTS = list(itertools.product(INDEX, repeat=len(DATA)))
 
 print('\nРазмещения на серверах (Т1, Т2, Т3):\n', VARIANTS)
 results = ((np.ma.array(COSTS, mask=MASK == variant).sum(), variant) for variant in VARIANTS)
-print('\nОптимально (ОПД, (Т1, Т2, Т3)):\n', sorted(results, key=lambda el: el[0])[0])
+print('\nОптимально (ОПД, (Т1, Т2, Т3)):\n', min(results, key=lambda el: el[0]))

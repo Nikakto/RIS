@@ -16,8 +16,10 @@ def cross_db_query(cost_base, cost_serv, verbose=False):
                for source, driver in VARIANTS]
 
     matrix = np.array([row[0] for row in results]).reshape(len(cost_serv), len(cost_serv))
-    print('\nМатрица. Строка - источник; Столбец - координатор:\n', matrix) if verbose else None
-    print('\nОптимально (ОПД, источник, координатор):\n', sorted(results, key=lambda el: el[0])[0]) if verbose else None
+
+    if verbose:
+        print('\nМатрица. Строка - источник; Столбец - координатор:\n', matrix)
+        print('\nОптимально (ОПД, источник, координатор):\n', min(results, key=lambda el: el[0]))
 
     return results
 
